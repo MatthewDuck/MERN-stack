@@ -1,0 +1,20 @@
+{
+  "name": "npm-folder",
+  "version": "1.0.0",
+  "description": "npm Example one",
+  "main": "node-package-manager.js",
+  "scripts": {
+    "start": "node ./node-package-manager.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "npm",
+    "javascript",
+    "node"
+  ],
+  "author": "Matthew Duck",
+  "license": "ISC",
+  "dependencies": {
+    "morgan": "^1.10.0"
+  }
+}

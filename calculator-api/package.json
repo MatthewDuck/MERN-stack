@@ -1,0 +1,15 @@
+{
+  "name": "calculator-api",
+  "version": "1.0.0",
+  "description": "Simple Calculator",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Matthew Duck",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
