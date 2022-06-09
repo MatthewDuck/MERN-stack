@@ -1,4 +1,4 @@
-const { response, Router } = require('express');
+const { response, userRouter } = require('express');
 const express = require('express');
 const morgan = require('morgan');
 const userRouter = require('./app/users');
@@ -33,7 +33,7 @@ router.get('/:id', (req, res) => {
         res.contentType('application/json').status(200).send(JSON.stringify(user));
         return;
     }
-    res.contentType(text/plain).status(404).send(`User with id ${id} not found`);
+    res.contentType('text/plain').status(404).send(`User with id ${id} not found`);
     // console.log(`Read by ID: ${id}`);
     // res.send(`Read User: ${id}`);
 });
@@ -69,7 +69,7 @@ router.delete('/:id', (req, res) => {
     const index = userList.indexOf(user);
 
     if (index > -1) {
-        users.splice(index, 1);
+        userList.splice(index, 1);
         delete user.id;
         return response(res, JSON.stringify(user));
     }

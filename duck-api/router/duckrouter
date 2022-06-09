@@ -1,0 +1,105 @@
+const express = require('express');
+const router = express.Router();
+
+let idCounter = 3;
+const database = [
+    {
+        id: 1,
+        name: 'Ruddy Duck',
+        region: 'North America',
+        genus: 'Oxyura',
+        colour: 'Brown with Blue Bill',
+        wingspan: 18.5
+    },
+    {
+        id: 2,
+        name: 'Harlequin Duck',
+        region: 'East Russia, Alaska and East Canada',
+        genus: 'Histrionicus',
+        colour: 'Dark slate Blue neck, white crescent in front of eyes, black crown stripe over body',
+        wingspan: 26
+    }
+];
+
+
+// function response(res, data, status = 200, contentType = 'application/json') {
+//     res.contentType(contentType).status(status).send(data);
+// }
+
+router.get('/', (request, response) => {
+    response.json(database);
+});
+
+router.get('/:id', (request, response, next) => {
+    const id = request.params.id;
+    const duck = database.find(duck => duck.id == id);
+    if (duck) {
+        return response.json(duck);
+    }
+    return next({
+        statusCode: 404,
+        message: `Duck with id:${id} not found`
+    });
+});
+
+router.post('/', (request, response, next) => {
+    if (Object.keys(request.body).length ==0) return next({
+        statusCode: 400,
+        message: `Body cannot be empty`
+    });
+
+    const newDuck = request.body;
+    newDuck.id = idCounter++;
+    database.push(newDuck);
+    response.status(201).json(newDuck);
+
+});
+
+router.put('/', (request, response, next) => {
+    if (Object.keys(request.body).length ==0) return next({
+        statusCode: 400,
+        message: `Body cannot be empty`
+    });
+
+    const id = Number(request.params.id);
+
+    if (isNaN(id)) return next({
+        statusCode: 400,
+        message: `ID must be a number`
+    });
+
+    const currentDuck = database.find(currentDuck => currentDuck.id == id);
+
+    if (!currentDuck) return next({
+        statusCode: 404,
+        message: `Duck with id:${id} not found`
+    });
+
+    currentDuck.name = request.body.name;
+    currentDuck.region = request.body.region;
+    currentDuck.colour = request.body.colour;
+    currentDuck.genus = request.body.genus;
+    currentDuck.wingspan = request.body.wingspan;
+    response.json(currentDuck);
+});
+
+router.delete('/:id', (request, response, next) => {
+    const id = Number(request.params.id);
+
+    if (isNaN(id)) return next({
+        statusCode: 400,
+        message: `ID must be a number`
+    });
+
+    const index = database.findIndex(duck => duck.id == id);
+
+    if (index == -1) return next({
+        statusCode: 404,
+        message: `Duck with id:${id} not found`
+    });
+
+    database.splice(index, 1);
+    response(`Duck Deleted`, 200, 'text.plain');
+});
+
+module.exports = router;
