@@ -81,6 +81,31 @@ router.put('/', (request, response, next) => {
     response.status(200).json(updatetodo);
 });
 
+router.patch('/', (request, response, next) => {
+    if (Object.keys(request.body).length == 0) return next({
+        statusCode: 400,
+        message: `Body cannot be empty`
+    });
+
+    const id = Number(request.params.id);
+
+    if (isNaN(id)) return next({
+        statusCode: 400,
+        message: `ID must be a number`
+    });
+
+    const updatetodo = todolist.find(todo => todo.id == id);
+
+    if (!updatetodo) return next({
+        statusCode: 404,
+        message: `List with id:${id} not found`
+    });
+
+    updatetodo.categories.data = request.body.categories.data;
+    updatetodo.status = request.body.status;
+    response.status(200).json(updatetodo);
+});
+
 router.delete('/:id', (request, response, next) => {
     const id = Number(request.params.id);
 
